@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '../lib/context'
 import { auth, firestore, googleAuthProvider } from '../lib/firebase'
 import debounce from 'lodash.debounce'
@@ -36,12 +36,7 @@ function UsernameForm() {
     const handleChange = (e) => {
         // Force form value typed in to match correct format
         const value = e.target.value.toLowerCase()
-        const regex = /^(?=[a-za-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/
-
-        // Listen for the formValue changes
-        useEffect(() => {
-            checkUsername(formValue)
-        }, [formValue])
+        const regex = /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/
 
         // Only set form value if length is < 3 OR it passes regex
         if (value.length < 3) {
@@ -57,7 +52,14 @@ function UsernameForm() {
         }
     }
 
-    const checkUsername = debounce(async (username) => {
+    // Listen for the formValue changes
+    useEffect(() => {
+        checkUsername(formValue)
+    }, [formValue])
+
+    // Hit the database for username match after each debounce
+    // useCallback is required for debounce to work
+    const checkUsername = useCallback(debounce(async (username) => {
         if (username.length >= 3) {
             const ref = firestore.doc(`usernames/${username}`)
             const { exists } = await ref.get()
@@ -65,7 +67,38 @@ function UsernameForm() {
             setIsValid(!exists)
             setLoading(false)
         }
-    }, 500)
+    }, 500), [])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            // Create refs for both documents
+            const userDoc = firestore.doc(`users/${user.uid}`)
+            const usernameDoc = firestore.doc(`usernames/${formValue}`)
+
+            // Commit both docs toguether as a batch write
+            const batch = firestore.batch()
+            batch.set(userDoc, { username: formValue, photoURL: user.photoURL, displayName: user.displayName })
+            batch.set(usernameDoc, { uid: user.uid })
+            
+            await batch.commit()
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+    const UsernameMessage = ({ username, isValid, loading }) => {
+        if (loading) {
+            return (<p>Checking...</p>)
+        } else if (isValid) {
+            return (<p className="text-success">{username} is available!</p>)
+        } else if (username && !isValid) {
+            return (<p className="text-danger">{username} is already taken!</p>)
+        } else {
+            return (<p></p>)
+        }
+    }
 
     return (
         !username && (
@@ -74,19 +107,19 @@ function UsernameForm() {
                 <form onSubmit={handleSubmit}>
                     <input name="username" placeholder="username" value={formValue} onChange={handleChange} />
 
+                    <UsernameMessage username={formValue} isValid={isValid} loading={loading} />
+
                     <button type="submit" className="btn-green" disabled={!isValid}>
                         Choose
                     </button>
 
                     <h3>Debug State</h3>
+        
                     <div>
-                        <pre>
-                            Username: {formValue}
-                            Loading: {loading.toString()}
-                            Username Valid: {isValid.toString()}
-                        </pre>
+                        Username: {formValue} <br/>
+                        Loading: {loading.toString()} <br/>
+                        Username Valid: {isValid.toString()}
                     </div>
-
                 </form>
             </section>
         )
