@@ -1,7 +1,7 @@
 const Enter = ({ }) => {
     return (
         <main>
-            Enter
+            Log In
         </main>
     )
 }
