@@ -10,6 +10,7 @@ import kebabCase from 'lodash.kebabcase'
 import AuthCheck from '../../components/AuthCheck'
 import PostsFeed from '../../components/PostsFeed'
 import toast from 'react-hot-toast'
+import Metatags from '../../components/Metatags'
 
 function CreateNewPost() {
     const router = useRouter()
@@ -93,6 +94,7 @@ function PostList() {
 const AdminPostPage = (props) => {
     return (
         <main>
+            <Metatags title='Create or Manage Posts' />
             <AuthCheck>
                 <CreateNewPost /> 
                 <PostList /> 

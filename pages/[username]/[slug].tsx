@@ -2,6 +2,10 @@ import styles from '../../styles/Post.module.css'
 import PostContent from '../../components/PostContent'
 import { firestore, getUserWithUsername, postToJSON } from '../../lib/firebase'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
+import Metatags from '../../components/Metatags'
+import AuthCheck from '../../components/AuthCheck'
+import LikeButton from '../../components/LikeButton'
+import Link from 'next/link'
 
 export const getStaticProps = async ({ params }) => {
     try {
@@ -60,6 +64,7 @@ const Post = (props) => {
 
     return (
         <main className={styles.container}>
+            <Metatags title='Edit Post' />
             <section>
                 <PostContent post={post} />
             </section>
@@ -68,6 +73,16 @@ const Post = (props) => {
                 <p>
                     <strong>{post.likesCount || 0} 👍</strong>
                 </p>
+
+                <AuthCheck 
+                    fallback={(
+                        <Link href="/enter">
+                            <button>👍 Sign In</button>
+                        </Link>
+                    )}
+                >
+                    <LikeButton postRef={postRef} />
+                </AuthCheck>
             </aside>
         </main>
     )

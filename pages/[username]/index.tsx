@@ -1,6 +1,7 @@
 import UserProfile from '../../components/UserProfile'
 import PostsFeed from '../../components/PostsFeed'
 import { getUserWithUsername, postToJSON } from '../../lib/firebase'
+import Metatags from '../../components/Metatags'
 
 export const getServerSideProps = async ({ query }) => {
     try {
@@ -42,6 +43,7 @@ export const getServerSideProps = async ({ query }) => {
 const UserProfilePage = ({ user, posts }) => {
     return (
         <main>
+            <Metatags title={`${user.displayName}'s Posts`} />
             <UserProfile user={user} />
             <PostsFeed posts={posts} />
         </main>

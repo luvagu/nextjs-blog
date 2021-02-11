@@ -21,7 +21,7 @@ const Navbar = () => {
                             </li>
                             <li>
                                 <Link href="/admin">
-                                    <button className="btn-blue">Write Posts</button>
+                                    <button className="btn-blue">My Posts</button>
                                 </Link>
                             </li>
                             <li>
