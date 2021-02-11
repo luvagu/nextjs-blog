@@ -18,7 +18,7 @@ const Navbar = () => {
             <ul>
                 <li>
                     <Link href="/">
-                        <button className="btn-logo">FEED</button>
+                        <button className="btn-logo">NEXT BLOG</button>
                     </Link>
                 </li>
                 {username 

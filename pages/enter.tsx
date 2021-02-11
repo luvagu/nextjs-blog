@@ -3,6 +3,7 @@ import { UserContext } from '../lib/context'
 import { auth, firestore, googleAuthProvider } from '../lib/firebase'
 import debounce from 'lodash.debounce'
 import Link from 'next/link'
+import Metatags from '../components/Metatags'
 
 // Sign in with Google button
 function SignInButton() {
@@ -15,9 +16,14 @@ function SignInButton() {
     }
 
     return (
-        <button className="btn-google" onClick={signInWithGoogle}>
-            <img src={'/google.png'} alt="google-logo" /> Sign In with Google
-        </button>
+        <>
+            <button className="btn-google" onClick={signInWithGoogle}>
+                <img src={'/google.png'} width="30px" alt="google-logo" /> Sign In with Google
+            </button>
+            <button onClick={() => auth.signInAnonymously()}>
+                Sign In Anonymously
+            </button>
+        </>
     )
 }
 
@@ -146,6 +152,7 @@ const Enter = () => {
     // 3. User signed in, has username <SignOutButton />
     return (
         <main>
+            <Metatags title="Sign In or Sign Up" description="Sign In or Sign Up to start writing posts!" />
             {user ? !username ? <UsernameForm /> : <SignOutButton /> : <SignInButton />}        
         </main>
     )
