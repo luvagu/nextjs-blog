@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { UserContext } from '../lib/context'
 import { auth, firestore, googleAuthProvider } from '../lib/firebase'
 import debounce from 'lodash.debounce'
+import Link from 'next/link'
 
 // Sign in with Google button
 function SignInButton() {
@@ -22,7 +23,14 @@ function SignInButton() {
 
 // Sign out button
 function SignOutButton() {
-    return (<button onClick={() => auth.signOut()}>Sign Out</button>)
+    return (
+        <>
+            <button onClick={() => auth.signOut()}>Sign Out</button>
+            <Link href="/admin">
+                <button className="btn-blue">My posts</button>
+            </Link>
+        </>
+    )
 }
 
 // Username form
@@ -64,7 +72,7 @@ function UsernameForm() {
             if (username.length >= 3) {
                 const ref = firestore.doc(`usernames/${username}`)
                 const { exists } = await ref.get()
-                console.log('Firestore read executed')
+                // console.log('Firestore read executed')
                 setIsValid(!exists)
                 setLoading(false)
             }

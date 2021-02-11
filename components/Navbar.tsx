@@ -1,9 +1,17 @@
 import { useContext } from 'react'
 import { UserContext } from '../lib/context'
 import Link from 'next/link'
+import { auth } from '../lib/firebase'
+import { useRouter } from 'next/router'
 
 const Navbar = () => {
     const { user, username } = useContext(UserContext)
+    const router = useRouter()
+
+    const redirectOnSignOut = () => {
+        router.push(`/enter`)
+        auth.signOut()
+    }
     
     return (
         <nav className="navbar">
@@ -17,7 +25,7 @@ const Navbar = () => {
                     ? (
                         <>
                             <li className="push-left">
-                                <button onClick={null}>Sign Out</button>
+                                <button onClick={() => redirectOnSignOut()}>Sign Out</button>
                             </li>
                             <li>
                                 <Link href="/admin">
@@ -35,7 +43,7 @@ const Navbar = () => {
                         <>
                             <li>
                                 <Link href={`/enter`}>
-                                    <button className="btn-blue">Log In</button>
+                                    <button className="btn-blue">Sign In</button>
                                 </Link>
                             </li>
                         </>

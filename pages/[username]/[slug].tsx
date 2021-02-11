@@ -64,7 +64,7 @@ const Post = (props) => {
 
     return (
         <main className={styles.container}>
-            <Metatags title='Edit Post' />
+            <Metatags title={`${post.title} by @${post.username}`} />
             <section>
                 <PostContent post={post} />
             </section>
@@ -77,7 +77,7 @@ const Post = (props) => {
                 <AuthCheck 
                     fallback={(
                         <Link href="/enter">
-                            <button>👍 Sign In</button>
+                            <button className="btn-blue">👍 Sign In</button>
                         </Link>
                     )}
                 >

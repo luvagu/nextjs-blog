@@ -4,7 +4,7 @@ import { auth, firestore, increment } from "../lib/firebase"
 // Allows a user to like a post
 const LikeButton = ({ postRef }) => {
     // Listen to likes document for currently logged in user
-    const likeRef = postRef.collection('likes').doc(auth.currentUser.uid)
+    const likeRef = postRef?.collection('likes').doc(auth.currentUser.uid)
     const [likeDoc] = useDocument(likeRef)
 
     const addLike = async () => {
