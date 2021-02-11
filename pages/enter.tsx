@@ -60,12 +60,16 @@ function UsernameForm() {
     // Hit the database for username match after each debounce
     // useCallback is required for debounce to work
     const checkUsername = useCallback(debounce(async (username) => {
-        if (username.length >= 3) {
-            const ref = firestore.doc(`usernames/${username}`)
-            const { exists } = await ref.get()
-            console.log('Firestore read executed')
-            setIsValid(!exists)
-            setLoading(false)
+        try {
+            if (username.length >= 3) {
+                const ref = firestore.doc(`usernames/${username}`)
+                const { exists } = await ref.get()
+                console.log('Firestore read executed')
+                setIsValid(!exists)
+                setLoading(false)
+            }
+        } catch (error) {
+            console.log(error.message)
         }
     }, 500), [])
 
@@ -126,7 +130,7 @@ function UsernameForm() {
     )
 }
 
-const Enter = ({ }) => {
+const Enter = () => {
     const { user, username } = useContext(UserContext)
 
     // 1. User signed out <SignInButton />

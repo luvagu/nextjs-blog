@@ -51,3 +51,4 @@ export const postToJSON = (doc) => {
 }
 
 export const fromMillis = firebase.firestore.Timestamp.fromMillis
+export const serverTimeStamp = firebase.firestore.FieldValue.serverTimestamp
