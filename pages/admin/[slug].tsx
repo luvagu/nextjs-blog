@@ -1,7 +1,10 @@
+import Metatags from '../../components/Metatags'
+
 const AdminPostEdit = ({ }) => {
     return (
         <main>
-            AdminPostEdit
+            <Metatags title='Admin Page' />
+            <h1>Edit Post</h1>
         </main>
     )
 }

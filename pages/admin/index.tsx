@@ -1,9 +1,13 @@
-const Admin = ({ }) => {
+import AuthCheck from "../../components/AuthCheck"
+
+const AdminPostPage = (props) => {
     return (
         <main>
-            Admin
+            <AuthCheck>
+                Hello
+            </AuthCheck>
         </main>
     )
 }
 
-export default Admin
+export default AdminPostPage

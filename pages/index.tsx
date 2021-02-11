@@ -3,6 +3,7 @@ import { firestore, fromMillis, postToJSON } from '../lib/firebase'
 
 import Loader from '../components/Loader'
 import PostsFeed from '../components/PostsFeed'
+import Metatags from '../components/Metatags'
 
 // Max posts to query per page
 const LIMIT = 10
@@ -61,6 +62,8 @@ const Home = (props) => {
 
   return (
     <main>
+      <Metatags />
+
       <PostsFeed posts={posts} />
 
       {!loading && !postsEnd && (<button onClick={getMorePosts}>Load More</button>)}

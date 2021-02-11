@@ -4,50 +4,71 @@ import { firestore, getUserWithUsername, postToJSON } from '../../lib/firebase'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 
 export const getStaticProps = async ({ params }) => {
-    const { username, slug } = params
-    const userDoc = await getUserWithUsername(username)
+    try {
+        const { username, slug } = params
+        const userDoc = await getUserWithUsername(username)
 
-    let post
-    let path
+        let post
+        let path
 
-    if (userDoc) {
-        const postRef = userDoc.ref.collection('posts').doc(slug)
-        
-        post = postToJSON(await postRef.get())
-        path = postRef.path         
-    }
+        if (userDoc) {
+            const postRef = userDoc.ref.collection('posts').doc(slug)
+            
+            post = postToJSON(await postRef.get())
+            path = postRef.path         
+        }
 
-    return {
-        props: { post, path },
-        revalidate: 5000
+        return {
+            props: { post, path },
+            revalidate: 5000
+        }
+    } catch (error) {
+        console.log(error.message)        
     }
 }
 
 export const getStaticPaths = async () => {
-    // @ToDo: Improve by using Admin SDK to select empty docs
-    const snapshot = await firestore.collectionGroup('posts').get()
+    try {
+        // @ToDo: Improve by using Admin SDK to select empty docs
+        const snapshot = await firestore.collectionGroup('posts').get()
 
-    const paths = snapshot.docs.map((doc) => {
-        const { username, slug } = doc.data()
+        const paths = snapshot.docs.map((doc) => {
+            const { username, slug } = doc.data()
+
+            return {
+                params: { username, slug }
+            }
+        })
+
         return {
-            params: { username, slug }
+            // must be in this form
+            // paths: [
+            //     { params: { username, slug } }
+            // ]
+            paths,
+            fallback: 'blocking'
         }
-    })
-
-    return {
-        // must be in this form
-        // paths: [
-        //     { params: { username, slug } }
-        // ]
-        paths,
-        fallback: 'blocking'
+    } catch (error) {
+        console.log(error.message)  
     }
 }
 
 const Post = (props) => {
+    const postRef = firestore.doc(props.path)
+    const [realtimePost] = useDocumentData(postRef)
+    const post = realtimePost || props.post
+
     return (
-        <main>
-            
+        <main className={styles.container}>
+            <section>
+                <PostContent post={post} />
+            </section>
+
+            <aside className="card">
+                <p>
+                    <strong>{post.likesCount || 0} 👍</strong>
+                </p>
+            </aside>
         </main>
     )
 }
