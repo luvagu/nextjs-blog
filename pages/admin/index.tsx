@@ -4,7 +4,7 @@ const AdminPostPage = (props) => {
     return (
         <main>
             <AuthCheck>
-                Hello
+                
             </AuthCheck>
         </main>
     )
