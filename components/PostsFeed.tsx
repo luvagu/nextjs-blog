@@ -41,7 +41,7 @@ function PostItem({ post, admin = false }) {
     )
 }
 
-const PostsFeed = ({ posts, admin }) => {
+const PostsFeed = ({ posts, admin=false }) => {
     return posts ? posts.map((post) => (<PostItem key={post.slug} post={post} admin={admin} />)) : null
 }
 
