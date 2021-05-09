@@ -1,3 +1,5 @@
+import Link from 'next/link'
+import { GetStaticProps, GetStaticPaths } from 'next'
 import styles from '../../styles/Post.module.css'
 import PostContent from '../../components/PostContent'
 import { firestore, getUserWithUsername, postToJSON } from '../../lib/firebase'
@@ -5,33 +7,8 @@ import { useDocumentData } from 'react-firebase-hooks/firestore'
 import Metatags from '../../components/Metatags'
 import AuthCheck from '../../components/AuthCheck'
 import LikeButton from '../../components/LikeButton'
-import Link from 'next/link'
 
-export const getStaticProps = async ({ params }) => {
-    try {
-        const { username, slug } = params
-        const userDoc = await getUserWithUsername(username)
-
-        let post
-        let path
-
-        if (userDoc) {
-            const postRef = userDoc.ref.collection('posts').doc(slug)
-            
-            post = postToJSON(await postRef.get())
-            path = postRef.path         
-        }
-
-        return {
-            props: { post, path },
-            revalidate: 5000
-        }
-    } catch (error) {
-        console.log(error.message)        
-    }
-}
-
-export const getStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
     try {
         // @ToDo: Improve by using Admin SDK to select empty docs
         const snapshot = await firestore.collectionGroup('posts').get()
@@ -57,10 +34,34 @@ export const getStaticPaths = async () => {
     }
 }
 
-const Post = (props) => {
-    const postRef = firestore.doc(props.path)
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+    try {
+        const { username, slug } = params
+        const userDoc = await getUserWithUsername(username)
+
+        let postData
+        let path
+
+        if (userDoc) {
+            const postRef = userDoc.ref.collection('posts').doc(slug as string)
+            
+            postData = postToJSON(await postRef.get())
+            path = postRef.path         
+        }
+
+        return {
+            props: { postData, path },
+            revalidate: 5000
+        }
+    } catch (error) {
+        console.log(error.message)        
+    }
+}
+
+const Post = ({ postData, path }) => {
+    const postRef = firestore.doc(path as string)
     const [realtimePost] = useDocumentData(postRef)
-    const post = realtimePost || props.post
+    const post = realtimePost || postData
 
     return (
         <main className={styles.container}>

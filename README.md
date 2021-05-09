@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <a href="https://nextjs-blog-pied-iota.vercel.app">
+    <img src="Screenshot.png" height="220">
+    <h1 align="center">Next Blog</h1>
+  </a>
+</p>
 
-## Getting Started
+> Next.js / Firebase / Custom usernames / TypeScript
 
-First, run the development server:
+Full Stack `Simple Social Blog` that lets authors create content using custom usernames while other users can like posts.
+
+------
+
+## Main Features
+
+- Hybrid pages featuring both `Static & Server Side Rendering` and `SEO`
+- Static pages also feature `Incremental Static Regeneration`
+- Server and Client side rendering for search and filters
+- Optimized images
+- Data is displayed in cards over a timeline
+- Uses Tailwind CSS framework for styling
+- Responsive design
+- Progress bar indicator shown on page transitions
+- Search news
+- Filters included by provider or by dates range
+- Cards likes system
+- Only logged in users may like cards once
+- Auth0 for user authentication
+
+## Clonning this repo
+
+If you'd like to clone this repo, you'd first need to setup a firebase `Pub/Sub Cloud Function` for the web scrapper background job (code found in the `functions` folder). Then open a FaunaDb [account](https://fauna.com/) and setup a database with two collections (news and likes) and get a server key. However, further tweaks are needed to pull the correct data for the various API endpoints, search & sort and likes. Setup necessary environment variables.
 
 ```bash
+git clone https://github.com/luvagu/next-headlines-archiver.git
+
+cd next-headlines-archiver
+
+npm install
+
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deploy the scheduled crawler after setting up and liking to your firebase project
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+cd functions
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+npm run deploy
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
