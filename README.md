@@ -15,37 +15,29 @@ Full Stack `Simple Social Blog` that lets authors create content using custom us
 
 - Hybrid pages featuring both `Static & Server Side Rendering` and `SEO`
 - Static pages also feature `Incremental Static Regeneration`
-- Server and Client side rendering for search and filters
-- Optimized images
-- Data is displayed in cards over a timeline
-- Uses Tailwind CSS framework for styling
-- Responsive design
-- Progress bar indicator shown on page transitions
-- Search news
-- Filters included by provider or by dates range
-- Cards likes system
-- Only logged in users may like cards once
-- Auth0 for user authentication
+- Bot friendly URLs and content
+- Custom usernames with `Firebase Auth`
+- Upload images in posts
+- Write post in markdown format
+- Firebase realtime data and CRUD
+- Realtime post likes
+- Toast messages and loader indicator
 
-## Clonning this repo
+## Cloning this repo
 
-If you'd like to clone this repo, you'd first need to setup a firebase `Pub/Sub Cloud Function` for the web scrapper background job (code found in the `functions` folder). Then open a FaunaDb [account](https://fauna.com/) and setup a database with two collections (news and likes) and get a server key. However, further tweaks are needed to pull the correct data for the various API endpoints, search & sort and likes. Setup necessary environment variables.
+Be sure to create a Firebase app before cloning this repo as you need to create a `.env.local` file and add the correct API Keys for your project to work properly.
 
 ```bash
-git clone https://github.com/luvagu/next-headlines-archiver.git
+git clone https://github.com/luvagu/nextjs-blog.git
 
-cd next-headlines-archiver
+cd nextjs-blog
 
 npm install
 
 npm run dev
 ```
 
-Deploy the scheduled crawler after setting up and liking to your firebase project
+## Live Demo
 
-```bash
-cd functions
-
-npm run deploy
-```
+Try the live demo at: https://nextjs-blog-pied-iota.vercel.app
 
