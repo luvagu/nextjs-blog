@@ -25,7 +25,7 @@ Full Stack `Simple Social Blog` that lets authors create content using custom us
 
 ## Cloning this repo
 
-Be sure to create a Firebase app before cloning this repo as you need to create a `.env.local` file and add the correct API Keys for your project to work properly.
+Be sure to create a Firebase app before cloning this repo as you'll need to create a `.env.local` file and add the correct API Keys for your project to work properly. It's also necessary to activate the Authentication method with the Google Account provider option.
 
 ```bash
 git clone https://github.com/luvagu/nextjs-blog.git
