@@ -1,13 +1,14 @@
+import { GetServerSideProps } from 'next'
 import UserProfile from '../../components/UserProfile'
 import PostsFeed from '../../components/PostsFeed'
 import { getUserWithUsername, postToJSON } from '../../lib/firebase'
 import Metatags from '../../components/Metatags'
 
-export const getServerSideProps = async ({ query }) => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     try {
         const { username } = query
 
-        const userDoc = await getUserWithUsername(username)
+        const userDoc = await getUserWithUsername(username as string)
 
         // If no user, short circuit to 404 page
         if (!userDoc) {
