@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { firestore, fromMillis, postToJSON } from '../lib/firebase'
-
+import { GetServerSideProps } from 'next'
 import Loader from '../components/Loader'
 import PostsFeed from '../components/PostsFeed'
 import Metatags from '../components/Metatags'
@@ -8,7 +8,7 @@ import Metatags from '../components/Metatags'
 // Max posts to query per page
 const LIMIT = 10
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   try {
     const postsQuery = firestore
       .collectionGroup('posts')

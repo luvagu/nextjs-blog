@@ -12,9 +12,9 @@ const MyApp = ({ Component, pageProps }) => {
   
   return (
     <UserContext.Provider value={userData}>
+      <Toaster />
       <Navbar />
       <Component {...pageProps} />
-      <Toaster />
     </UserContext.Provider>
   )
 }
