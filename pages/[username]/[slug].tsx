@@ -37,7 +37,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     try {
         const { username, slug } = params
-        const userDoc = await getUserWithUsername(username)
+        const userDoc = await getUserWithUsername(username as string)
 
         let postData
         let path
